@@ -17,7 +17,7 @@ function handleSubmit(event) {
         alert('not valid url')
     }  
 };
-const RESULTS = async (RES) => {
+const RESULTS = function (RES) {
     document.querySelector("#polarity").innerHTML = `Polarity = ${RES.score_tag}`
     document.querySelector("#agreement").innerHTML=`Agreement = ${RES.agreement}`
     document.querySelector("#subjectivity").innerHTML=`Subjectivity = ${RES.subjectivity}`
