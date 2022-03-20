@@ -1,12 +1,13 @@
 
-$myFont:Arial, Helvetica, sans-serif;
+$myFont:'Dosis', sans-serif;
 
+$fontTwo: Arial, Helvetica, sans-serif;
 
 body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-image:linear-gradient(0deg, rgba(73, 73, 100, 0.2), rgba(3, 3, 43, 0.7) 70.71%), url('./img/sentim.png');
+    background-image:linear-gradient(0deg, rgba(100, 87, 73, 0), rgba(245, 221, 11, 0.1) 70%), url('./img/sentim.jpg');
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
@@ -17,8 +18,8 @@ main {
 }
 .logo{
     font-family: $myFont;
-    font-size: 10em;
-    color: rgb(196, 196, 188);
+    font-size: 8em;
+    color: rgb(252, 252, 252);
 }
 section {
     max-width: 800px;

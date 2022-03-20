@@ -3,6 +3,17 @@
     <head>
         <meta charset="utf-8">
         <title>Test</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Dosis:wght@500&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script type="text/javascript" src="//cdn.jsdelivr.net/jquery/1/jquery.min.js"></script>
+        <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap/3/css/bootstrap.css" />
+        <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
         <link rel="stylesheet" href="/styles/resets.css">
         <link rel="stylesheet" href="/styles/base.css">
         <link rel="stylesheet" href="/styles/header.css">
@@ -14,23 +25,60 @@
 
         <header>
             <div class="logo">
-              <h1>NPL</h1>
-              <h2>on text.</h2>
+              <h1>MyTravelapp</h1>
+              
+           
             </div>
-            <div class="">
-                navigation
-            </div>
+           
         </header>
 
         <main>
-            <section>
+                
+            <form>
+                <fieldset>
+                <label for="Nazioni" class="form-label">Insert Country</label>
+                <select id='Nazioni' name="siti">
+                </select> 
+                <h1 id="cod"></h1>
+                </fieldset>
+                <br>
+
+
+
+                  <label for="Inputcity" class="form-label">City</label>
+                  <input class="form-control" id="Inputcity" aria-describedby="City destination">
+                   
+                  
+                
+                    <br><br>
+                    <label for="range" class="form-label">Arrival - Departure</label>
+                    <input id="range" type="text" name="daterange" value="01/01/2018 - 01/15/2018" />
+
+                    <script>
+                    $(function() {
+                      $('input[name="daterange"]').daterangepicker({
+                        opens: 'left'
+                      }, function(start, end, label) {
+                        console.log("A new date selection was made: " + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
+                        var newPeriod=start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD')
+                        console.log($('input[name="daterange"]').prop("value"));
+                        $('input[name="daterange"]').prop("value",newPeriod);
+                        console.log($('input[name="daterange"]').prop("value"));
+                      });
+                    });
+                    </script>
+                <a id="submt" class="btn btn-secondary">Add Destination</a>
+              </form>
+
+
+            <!-- <section>
                 <form class="" onsubmit="return Klient.handleSubmit(event)">
                     <input id="URL" type="text" name="input" value=""  placeholder="copy URL">
                     <input type="submit" name="" value="submit" onclick="return Klient.handleSubmit(event)" onsubmit="return Klient.handleSubmit(event)">
                 </form>
-            </section>
+            </section> -->
 
-            <section>
+            <!-- <section>
                 <strong>Form Results:</strong>
                 <div id="results">
                         <div id="polarity"></div>
@@ -39,7 +87,7 @@
 						<div id="confidence"></div>
 						<div id="irony"></div>
                 </div>
-            </section>
+            </section> -->
         </main>
 
         <footer>

@@ -1,11 +1,12 @@
-$myFont:Arial, Helvetica, sans-serif;
+$myFont:'Dosis', sans-serif;
+
 
 
 footer{
     display: grid;
     grid-template-areas: "uno due tre quattro";
 
-    background-color:  rgba(3, 3, 43, 0.7);
+    background-color:  rgba(145, 85, 6, 0.2);
     height: 100px;
     align-items: center;
     align-content: center;
