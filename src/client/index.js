@@ -77,31 +77,38 @@ submit.addEventListener("click",()=>{
         }
         return res
     }).then(function(res){
-        for(let cit in res.data){
-            createCityTab(res.data,cit);
+
+        //this code generate a div for every city
+        for(let cit in res.data){          
+            createCityTab(res.data,cit)
+             .then(()=>{//this script for every div-city add the delete function to the button 
+                   let codeToDelete=res.data[cit]['code']
+                    let b = document.querySelector(`#${res.data[cit]['code']}`);
+                    function myFunction(){
+                        console.log(`${res.data[cit]['code']}`)
+                        b.parentElement.remove()
+                        axios.post('/deleteCity', {
+                            cityCode: codeToDelete   
+                        }).then(function(res) {
+                            console.log(res.data);})
+                    }
+                    b.addEventListener("click", myFunction)
+             })
         }
 
     }).then(()=>{spin.classList.add('displayNon')});
 });
+//this script generate div for city
 let createCityTab = async function (data,index){
     let main= document.querySelector('#Main')
     let divCity = document.createElement("div");
     divCity.style.display='block'
     divCity.classList.add("city");
     divCity.classList.add("boxFlex");
-    divCity.innerHTML=`<h1>${data[index]['city']}, ${data[index]['Nation']}, Population ${data[index]['Population']}</h1><button value="${data[index]['code']}" class="btn btn-secondary btnCancel">X</button><br>
+    divCity.innerHTML=`<h1>${data[index]['city']}, ${data[index]['Nation']}, Population ${data[index]['Population']}</h1><button id="${data[index]['code']}" class="btn btn-secondary btnCancel">X</button><br>
                         <h1>Arrive: ${data[index]['Date_Arrive'].substr(0,10)}, Departure: ${data[index]['Date_Departure'].substr(0,10)}</h1><br>
                         <h1>Total days in the City ${data[index]['Totl_Days_in_the_city']}</h1><br>
                         <h1>Temperature (°C) ${data[index]['Temperature(°c)']}</h1><br>
                         <img class='imgCity' src="${data[index]['Photo']}" alt="">`
-
-
-
-
-
-    
     main.appendChild(divCity);
-    // let data_city=document.createElement("h3");
-    // data_city.textContent=data[index]['city'];
-    // divCity.appendChild(data_city);
 }

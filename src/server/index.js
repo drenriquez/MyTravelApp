@@ -15,8 +15,6 @@ let GEONAMES_USERNAME=process.env.GEONAMES_USERNAME;
 
 let lngGEONAMES=null;
 let latGEONAME=null;
-let DateArrive=null;
-let DateDeparture=null;
 let PopulationGEONAMES=null;
 
 let listOfCity=[];
@@ -52,6 +50,17 @@ app.get('/test', function (req, res) {
     res.send(mockAPIResponse);
 });
 // POST Route
+app.post('/deleteCity'  , async function(req, res) {   
+  let indexElement=0;
+  for (const element of listOfCity) {
+    
+    if(element['code']===req.body.cityCode){
+      listOfCity.splice(indexElement, 1);
+    }
+    ++indexElement; 
+  }
+  res.send('***OK**CITY**DELETED***');
+});
 app.post('/dataForGeoname', async function(req, res) {
     console.log('***************POST 0K******************');
 
@@ -64,11 +73,6 @@ app.post('/dataForGeoname', async function(req, res) {
     let DateArrive=new Date(period.substr(0, 10).trim());
     let DateDeparture= new Date(period.substr(13, 10).trim());
     let totalDaysInCity=(DateDeparture-DateArrive)/(24*3600000);
-    console.log(city+' '+nation+' '+code+' '+period);
-    console.log(DateArrive,'--',DateDeparture)
-
-    
-
     
     //responses of APIs inizialized
     let responseGeoname='';
@@ -80,12 +84,7 @@ app.post('/dataForGeoname', async function(req, res) {
     let getGeoname= GEONAMES_BASEURL+GEONAMES_CITY+GEONAMES_PARAMS+'username='+GEONAMES_USERNAME
     await axios.get(getGeoname).then(resp => {
        
-        responseGeoname=resp.data;
-        
-      })
-      .catch(err => {
-        res.end(JSON.stringify({err : "There was some error"}));
-      })
+      responseGeoname=resp.data;
       //This code select the correct city with code of Nation
       let correctCity=''
       for(let element of responseGeoname['geonames']){//provare con il metodo find
@@ -94,13 +93,23 @@ app.post('/dataForGeoname', async function(req, res) {
             break   
           }
       }
-      console.log(correctCity);
+      if(correctCity['name']){
+        city=correctCity['name']
+        PopulationGEONAMES=correctCity['population'];
+      }
+      else{
+        city='---';
+        PopulationGEONAMES='---'
+      }
       lngGEONAMES=correctCity['lng'];
       latGEONAME=correctCity['lat'];
-      PopulationGEONAMES=correctCity['population'];
-      city=correctCity['name']
+      })
+      .catch(err => {
+        res.end(JSON.stringify({err : "There was some error"}));
+      })
+      
       //res.send('OK****************************');
-
+    cityData['Temperature(°c)']='';  
     // API Weatherbit
      //current
     const url = `https://api.weatherbit.io/v2.0/current?lat=${latGEONAME}&lon=${lngGEONAMES}&key=${API_KEY_WEATHERBIT}`;
@@ -110,6 +119,12 @@ app.post('/dataForGeoname', async function(req, res) {
         // console.log(responseWeatherbit['data'][0]['temp']);
         // console.log(responseWeatherbit['data'][0]['datetime']);
         //console.log(responseWeatherbit['data'][0]['name']);
+        
+        if(responseWeatherbit['data'][0]['temp']){
+          cityData['Temperature(°c)']=responseWeatherbit['data'][0]['temp'];
+        }
+        
+          
         
     })
     .catch(err => {
@@ -123,16 +138,17 @@ app.post('/dataForGeoname', async function(req, res) {
     await axios.get(urlPIXABAY).then(resp => {
       responsePIXABAY=resp.data;
       // console.log(responsePIXABAY);
-      console.log(responsePIXABAY['hits'][0]['webformatURL'])
+      cityData['Photo']='https://cdn.pixabay.com/photo/2020/01/27/10/24/pollution-4796858_960_720.jpg';
+      if(responsePIXABAY['hits'][0]['webformatURL']){
+        cityData['Photo']=responsePIXABAY['hits'][0]['webformatURL'];
+      }
+      
     })
     .catch(err => {
-    res.end(JSON.stringify({err : "There was some error"}));
+      cityData['Photo']='https://cdn.pixabay.com/photo/2020/01/27/10/24/pollution-4796858_960_720.jpg';
+      res.end(JSON.stringify({err : "There was some error"}));
     })
-    console.log(totalDaysInCity);
-    console.log(DateArrive);
-    console.log(DateDeparture);
     
-
     cityData['code']= city+(listOfCity.length+1);
     cityData['city']=city;
     cityData['Nation']=nation;
@@ -140,9 +156,7 @@ app.post('/dataForGeoname', async function(req, res) {
     cityData['Date_Departure']=DateDeparture;
     cityData['Totl_Days_in_the_city']=totalDaysInCity;
     cityData['Population']=PopulationGEONAMES;
-    cityData['Temperature(°c)']=responseWeatherbit['data'][0]['temp'];
-    cityData['Photo']=responsePIXABAY['hits'][0]['webformatURL'];
-
+   
     console.log(cityData);
     listOfCity.push(cityData);
     console.log(listOfCity);
