@@ -11,6 +11,7 @@ let codes = [];
 let nationSelected='';
 let codeNationSelested='';
 
+let main= document.querySelector('#Main');
 //  ASYNC GET
 const getCodeOrNation = async (url = '') => {
     const request = await fetch(url);
@@ -61,12 +62,46 @@ e.addEventListener('change', () => {
 
 let submit=document.getElementById("submt");
 submit.addEventListener("click",()=>{
+    let spin=document.querySelector('#spin');
+    spin.classList.remove('displayNon')
     let period=document.querySelector('#range').value;
     console.log(period)
     let city=document.getElementById("Inputcity").value;
     console.log(city);
     //send code and nation to server
     axios.post('/dataForGeoname', {city: city,nation:nationSelected, code:codeNationSelested,period:period}).then(function(res) {
-        console.log(res.data)
-    })
+        console.log(res.data);
+        let divToRemove=document.querySelector('.city')
+        if(divToRemove){
+            document.querySelectorAll('.city').forEach(e => e.remove());
+        }
+        return res
+    }).then(function(res){
+        for(let cit in res.data){
+            createCityTab(res.data,cit);
+        }
+
+    }).then(()=>{spin.classList.add('displayNon')});
 });
+let createCityTab = async function (data,index){
+    let main= document.querySelector('#Main')
+    let divCity = document.createElement("div");
+    divCity.style.display='block'
+    divCity.classList.add("city");
+    divCity.classList.add("boxFlex");
+    divCity.innerHTML=`<h1>${data[index]['city']}, ${data[index]['Nation']}, Population ${data[index]['Population']}</h1><button value="${data[index]['code']}" class="btn btn-secondary btnCancel">X</button><br>
+                        <h1>Arrive: ${data[index]['Date_Arrive'].substr(0,10)}, Departure: ${data[index]['Date_Departure'].substr(0,10)}</h1><br>
+                        <h1>Total days in the City ${data[index]['Totl_Days_in_the_city']}</h1><br>
+                        <h1>Temperature (°C) ${data[index]['Temperature(°c)']}</h1><br>
+                        <img class='imgCity' src="${data[index]['Photo']}" alt="">`
+
+
+
+
+
+    
+    main.appendChild(divCity);
+    // let data_city=document.createElement("h3");
+    // data_city.textContent=data[index]['city'];
+    // divCity.appendChild(data_city);
+}

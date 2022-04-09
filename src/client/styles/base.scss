@@ -15,11 +15,23 @@ body {
 
 main {
     flex: 2;
+    display: flex;
+    flex-wrap: wrap;
+}
+boxFlex{
+    width: 33%;
 }
 .logo{
+    display: flex;
     font-family: $myFont;
     font-size: 8em;
     color: rgb(252, 252, 252);
+}
+@media (max-width:768px){
+    .logo{
+       
+        flex-wrap: wrap;
+    }
 }
 section {
     max-width: 800px;
@@ -42,4 +54,17 @@ strong{
     margin-bottom: 20px;
     font-size: 5em;
 
+}
+.displayNon{
+    display: none;
+}
+.imgCity{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+.btnCancel{
+    position: absolute;
+    right:5px;
+    top:0px
 }

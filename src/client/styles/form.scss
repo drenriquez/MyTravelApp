@@ -35,3 +35,19 @@ label{
 #Nazioni{
     border-radius:5px ;
 }
+.city{
+    position: relative;
+    border-radius: 10px;
+    padding: 40px;
+    background:rgba(131, 131, 134, 0.3) ;
+    font-family: $myFont;
+    height: auto;
+    width: 400px;
+    padding: 20px;
+    margin: 30px;
+    box-shadow: 2px 4px 5px #444;
+    color: white;
+    button{
+        margin-top: 20px;
+    }
+}

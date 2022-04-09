@@ -15,11 +15,11 @@ let GEONAMES_USERNAME=process.env.GEONAMES_USERNAME;
 
 let lngGEONAMES=null;
 let latGEONAME=null;
-let City=null;
 let DateArrive=null;
 let DateDeparture=null;
 let PopulationGEONAMES=null;
 
+let listOfCity=[];
 let API_KEY_WEATHERBIT=process.env.API_KEY_WEATHERBIT;
 
 let API_KEY_PIXABAY=process.env.API_KEY_PIXABAY;
@@ -55,6 +55,7 @@ app.get('/test', function (req, res) {
 app.post('/dataForGeoname', async function(req, res) {
     console.log('***************POST 0K******************');
 
+    let cityData={}
     //Data for APIs
     let city=req.body.city;
     let nation=req.body.nation;
@@ -65,6 +66,9 @@ app.post('/dataForGeoname', async function(req, res) {
     let totalDaysInCity=(DateDeparture-DateArrive)/(24*3600000);
     console.log(city+' '+nation+' '+code+' '+period);
     console.log(DateArrive,'--',DateDeparture)
+
+    
+
     
     //responses of APIs inizialized
     let responseGeoname='';
@@ -95,7 +99,7 @@ app.post('/dataForGeoname', async function(req, res) {
       latGEONAME=correctCity['lat'];
       PopulationGEONAMES=correctCity['population'];
       city=correctCity['name']
-      res.send('OK****************************');
+      //res.send('OK****************************');
 
     // API Weatherbit
      //current
@@ -119,7 +123,7 @@ app.post('/dataForGeoname', async function(req, res) {
     await axios.get(urlPIXABAY).then(resp => {
       responsePIXABAY=resp.data;
       // console.log(responsePIXABAY);
-      // console.log(responsePIXABAY['hits'][0]['webformatURL'])
+      console.log(responsePIXABAY['hits'][0]['webformatURL'])
     })
     .catch(err => {
     res.end(JSON.stringify({err : "There was some error"}));
@@ -127,6 +131,22 @@ app.post('/dataForGeoname', async function(req, res) {
     console.log(totalDaysInCity);
     console.log(DateArrive);
     console.log(DateDeparture);
+    
+
+    cityData['code']= city+(listOfCity.length+1);
+    cityData['city']=city;
+    cityData['Nation']=nation;
+    cityData['Date_Arrive']=DateArrive;
+    cityData['Date_Departure']=DateDeparture;
+    cityData['Totl_Days_in_the_city']=totalDaysInCity;
+    cityData['Population']=PopulationGEONAMES;
+    cityData['Temperature(°c)']=responseWeatherbit['data'][0]['temp'];
+    cityData['Photo']=responsePIXABAY['hits'][0]['webformatURL'];
+
+    console.log(cityData);
+    listOfCity.push(cityData);
+    console.log(listOfCity);
+    res.send(listOfCity);
   });
 
 //the nations and codes

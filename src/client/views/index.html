@@ -25,15 +25,15 @@
 
         <header>
             <div class="logo">
-              <h1>MyTravelapp</h1>
+              <h1>MyTravel</h1><h1>app</h1> 
               
            
             </div>
            
         </header>
 
-        <main>
-                
+        <main id="Main">
+          <div class="boxFlex">   
             <form>
                 <fieldset>
                 <label for="Nazioni" class="form-label">Insert Country</label>
@@ -68,26 +68,12 @@
                     });
                     </script>
                 <a id="submt" class="btn btn-secondary">Add Destination</a>
-              </form>
-
-
-            <!-- <section>
-                <form class="" onsubmit="return Klient.handleSubmit(event)">
-                    <input id="URL" type="text" name="input" value=""  placeholder="copy URL">
-                    <input type="submit" name="" value="submit" onclick="return Klient.handleSubmit(event)" onsubmit="return Klient.handleSubmit(event)">
-                </form>
-            </section> -->
-
-            <!-- <section>
-                <strong>Form Results:</strong>
-                <div id="results">
-                        <div id="polarity"></div>
-						<div id="agreement"></div>
-						<div id="subjectivity"></div>
-						<div id="confidence"></div>
-						<div id="irony"></div>
-                </div>
-            </section> -->
+                <div id='spin' class="spinner-grow spinner-grow-sm displayNon" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+            </form>
+            <!-- <div class="city"></div> -->
+          </div>
         </main>
 
         <footer>
