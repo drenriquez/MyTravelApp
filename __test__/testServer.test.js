@@ -1,5 +1,5 @@
-const app = require('../src/server/index');
 const supertest = require('supertest');
+const app = require('../src/server/index');
 const request = supertest(app);
 import "regenerator-runtime/runtime";
 
