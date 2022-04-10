@@ -11,7 +11,6 @@ let codes = [];
 let nationSelected='';
 let codeNationSelested='';
 
-let main= document.querySelector('#Main');
 //  ASYNC GET
 const getCodeOrNation = async (url = '') => {
     const request = await fetch(url);
@@ -78,22 +77,36 @@ submit.addEventListener("click",()=>{
         return res
     }).then(function(res){
 
-        //this code generate a div for every city
-        for(let cit in res.data){          
-            createCityTab(res.data,cit)
-             .then(()=>{//this script for every div-city add the delete function to the button 
-                   let codeToDelete=res.data[cit]['code']
-                    let b = document.querySelector(`#${res.data[cit]['code']}`);
-                    function myFunction(){
-                        console.log(`${res.data[cit]['code']}`)
-                        b.parentElement.remove()
-                        axios.post('/deleteCity', {
-                            cityCode: codeToDelete   
-                        }).then(function(res) {
-                            console.log(res.data);})
-                    }
-                    b.addEventListener("click", myFunction)
+        //this code generate a div for every city if city exist
+        for(let cit in res.data){
+            //if the city dont exist
+            if(res.data[cit]['city']==='---'){                
+                alert('this city does not exist or nation is wrong!!')
+                let codeToDelete=res.data[cit]['code'];
+                console.log(codeToDelete);
+                axios.post('/deleteCity', {
+                    cityCode: codeToDelete   
+                }).then(function(res) {
+                    console.log(res.data);})
+            }
+            //if the city exist
+            else{    
+                console.log(res.data[cit]['city']+"*****************")     
+                createCityTab(res.data,cit)
+                .then(()=>{//this script for every div-city add the delete function to the button 
+                    let codeToDelete=res.data[cit]['code']
+                        let b = document.querySelector(`#${res.data[cit]['code']}`);
+                        function myFunction(){
+                            console.log(`${res.data[cit]['code']}`)
+                            b.parentElement.remove()
+                            axios.post('/deleteCity', {
+                                cityCode: codeToDelete   
+                            }).then(function(res) {
+                                console.log(res.data);})
+                        }
+                        b.addEventListener("click", myFunction)
              })
+            }
         }
 
     }).then(()=>{spin.classList.add('displayNon')});

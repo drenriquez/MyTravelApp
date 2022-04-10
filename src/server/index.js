@@ -96,13 +96,16 @@ app.post('/dataForGeoname', async function(req, res) {
       if(correctCity['name']){
         city=correctCity['name']
         PopulationGEONAMES=correctCity['population'];
+        lngGEONAMES=correctCity['lng'];
+        latGEONAME=correctCity['lat'];
       }
       else{
         city='---';
         PopulationGEONAMES='---'
+        lngGEONAMES='-135';
+        latGEONAME='90';
       }
-      lngGEONAMES=correctCity['lng'];
-      latGEONAME=correctCity['lat'];
+      
       })
       .catch(err => {
         res.end(JSON.stringify({err : "There was some error"}));
@@ -112,7 +115,7 @@ app.post('/dataForGeoname', async function(req, res) {
     cityData['Temperature(°c)']='';  
     // API Weatherbit
      //current
-    const url = `https://api.weatherbit.io/v2.0/current?lat=${latGEONAME}&lon=${lngGEONAMES}&key=${API_KEY_WEATHERBIT}`;
+    const url =`https://api.weatherbit.io/v2.0/current?lat=${latGEONAME}&lon=${lngGEONAMES}&key=${API_KEY_WEATHERBIT}`; //`https://api.weatherbit.io/v2.0/current?lat=${latGEONAME}&lon=${lngGEONAMES}&key=${API_KEY_WEATHERBIT}`;
     await axios.get(url).then(resp => {
         responseWeatherbit=resp.data;
         // console.log(responseWeatherbit);
