@@ -47,8 +47,11 @@ app.listen(port, function () {
 });
 
 app.get('/test', function (req, res) {
-    res.send(mockAPIResponse);
+  res.json({
+    status : 200
+  })
 });
+
 // POST Route
 app.post('/deleteCity'  , async function(req, res) {   
   let indexElement=0;
@@ -189,3 +192,4 @@ readXlsxFile('CountryCode.xlsx').then((rows) => {
  function reqCodes(req,resp){
      resp.send(nationCodes);
  };
+ module.exports = app;

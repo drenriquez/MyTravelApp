@@ -5,23 +5,14 @@ import './styles/base.scss'
 import './styles/footer.scss'
 import './styles/form.scss'
 import './styles/header.scss'
+import { getCodeOrNation } from './js/codeAndNations'
 
 let nations = [];
 let codes = [];
 let nationSelected='';
 let codeNationSelested='';
 
-//  ASYNC GET
-const getCodeOrNation = async (url = '') => {
-    const request = await fetch(url);
-    try {
-        const allData = await request.json();
-        return allData;
-    } catch (error) {
-        console.log("error", error);
-    }
 
-};
 async function NationsAndCodes() {
     getCodeOrNation('/Nation').then(function (allData) {
         nations = allData;
@@ -45,15 +36,15 @@ function construct() {
     };
     document.querySelector("#Nazioni").appendChild(fragment);
 };
-setTimeout(() => { construct(); value = e.options[e.selectedIndex].value; }, 800);
+setTimeout(() => { construct();let value=null; value = e.options[e.selectedIndex].value; }, 800);
 
 let e = document.getElementById("Nazioni");
 let cod = document.getElementById("cod");
 e.addEventListener('change', () => {
-    let value = e.options[e.selectedIndex].value.substr(0,2)  ;
-    cod.textContent =value;
-    console.log(value);
-    codeNationSelested=value;
+    let valuet = e.options[e.selectedIndex].value.substr(0,2)  ;
+    cod.textContent =valuet;
+    console.log(valuet);
+    codeNationSelested=valuet;
     console.log( e.options[e.selectedIndex].textContent);
     nationSelected=e.options[e.selectedIndex].textContent;
 
@@ -105,7 +96,7 @@ submit.addEventListener("click",()=>{
                                 console.log(res.data);})
                         }
                         b.addEventListener("click", myFunction)
-             })
+                })
             }
         }
 
@@ -124,4 +115,5 @@ let createCityTab = async function (data,index){
                         <h1>Temperature (°C) ${data[index]['Temperature(°c)']}</h1><br>
                         <img class='imgCity' src="${data[index]['Photo']}" alt="">`
     main.appendChild(divCity);
-}
+};
+export { getCodeOrNation }
